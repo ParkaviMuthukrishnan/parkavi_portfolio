@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #0b090c;
+    --fg: #eae5ec;
+    --accent-from: #f97316;
+    --accent-to: #fbbf24;
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: auto; /* Lenis handles smoothing */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: rgba(249, 115, 22, 0.35);
+    color: #fff;
+  }
+
+  /* Visible, consistent focus rings for keyboard users only */
+  :focus {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-from);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Sections receive programmatic focus after in-page navigation; don't outline them */
+  [tabindex="-1"]:focus-visible {
+    outline: none;
+  }
+
+  /* Hide the native cursor only when the custom cursor is active (fine pointer, no reduced motion) */
+  html.has-custom-cursor,
+  html.has-custom-cursor a,
+  html.has-custom-cursor button,
+  html.has-custom-cursor [role="button"] {
+    cursor: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
+  }
+
+  .section {
+    @apply relative py-24 sm:py-28 lg:py-36;
+  }
+
+  .glass {
+    @apply relative rounded-3xl border border-line bg-bg-card shadow-card backdrop-blur-md;
+  }
+
+  .glass-hover {
+    @apply transition-[box-shadow,border-color,transform] duration-500 ease-out-expo hover:-translate-y-1 hover:border-accent/40 hover:shadow-glow-sm;
+  }
+
+  .text-gradient {
+    @apply bg-accent-gradient bg-clip-text text-transparent;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent-soft px-4 py-1.5 font-heading text-[11px] font-semibold uppercase tracking-[0.22em] text-accent;
+  }
+
+  .pill {
+    @apply inline-flex items-center rounded-full border border-line bg-white/[0.03] px-3 py-1 font-heading text-[11px] font-semibold uppercase tracking-[0.12em] text-fg-muted transition-colors duration-300 hover:border-accent/40 hover:text-fg;
+  }
+
+  .link-underline {
+    @apply relative inline-flex items-center gap-1.5 after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-500 after:ease-out-expo hover:after:scale-x-100 focus-visible:after:scale-x-100;
+  }
+}
+
+@layer utilities {
+  /* Subtle film grain using an inline SVG turbulence filter */
+  .grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+  }
+
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pause-on-hover:hover > * {
+    animation-play-state: paused;
+  }
+}
